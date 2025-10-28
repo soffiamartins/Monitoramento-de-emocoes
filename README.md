@@ -1,16 +1,28 @@
-# React + Vite
+# Monitoramento de Emoções
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto é um **sistema de monitoramento de emoções** desenvolvido com Node.js e React.  
 
-Currently, two official plugins are available:
+## Pré-requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Antes de rodar o projeto, é necessário ter instalado em sua máquina:
 
-## React Compiler
+- [Node.js](https://nodejs.org/)  
+- [Git](https://git-scm.com/)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Como rodar o projeto
 
-## Expanding the ESLint configuration
+1. **Clonar o repositório**  
+   Abra o terminal e execute:  
+   ```bash
+   git clone https://github.com/seu-usuario/Monitoramento-de-emocoes.git
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+2. **Instalar as dependências**
+No terminal bash do VS Code, dentro da pasta do projeto, execute:
+
+npm install
+
+3. **Rodar o projeto**
+Depois que todas as dependências forem instaladas, você poderá iniciar o projeto com:
+
+npm start
+
