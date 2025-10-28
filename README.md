@@ -17,12 +17,12 @@ Antes de rodar o projeto, é necessário ter instalado em sua máquina:
    git clone https://github.com/seu-usuario/Monitoramento-de-emocoes.git
 
 2. **Instalar as dependências**
-No terminal bash do VS Code, dentro da pasta do projeto, execute:
-```bash
-   npm install
+   No terminal bash do VS Code, dentro da pasta do projeto, execute:
+
+npm install
 
 3. **Rodar o projeto**
-Depois que todas as dependências forem instaladas, você poderá iniciar o projeto com:
-```bash
+   Depois que todas as dependências forem instaladas, você poderá iniciar o projeto com:
+
    npm start
 
