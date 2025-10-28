@@ -18,11 +18,11 @@ Antes de rodar o projeto, é necessário ter instalado em sua máquina:
 
 2. **Instalar as dependências**
 No terminal bash do VS Code, dentro da pasta do projeto, execute:
-
-npm install
+```bash
+   npm install
 
 3. **Rodar o projeto**
 Depois que todas as dependências forem instaladas, você poderá iniciar o projeto com:
-
-npm start
+```bash
+   npm start
 
