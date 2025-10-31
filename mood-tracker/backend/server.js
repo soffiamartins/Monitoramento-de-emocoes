@@ -1,50 +1,56 @@
 import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-
-//importação e conexão do banco
+import session from 'express-session';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import './config/database.js';
 
+// Importar rotas
 import authRoutes from './routes/auth.js';
-// import moodRoutes from './routes/mood.js';
-;
+import moodRoutes from './routes/mood.js';
 
-
-
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
-// Middlewares básicos
-app.use(cors({
-  origin: 'http://localhost:5173', // Front-end do Vite
-  credentials: true
-}));
+// Configurar EJS como template engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Middlewares
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
+// Sessions (para manter usuário logado)
+app.use(session({
+  secret: 'mood-tracker-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // true se usar HTTPS
+}));
 
-// Rota de saúde para testar
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
-    message: 'Servidor do Mood Tracker rodando',
-    timestamp: new Date().toISOString()
-  });
+// Middleware para disponibilizar user nas views
+app.use((req, res, next) => {
+  res.locals.user = req.session.user;
+  next();
 });
 
-// Rota simples de teste
-app.get('/api/test', (req, res) => {
-  res.json({ 
-    message: 'Back-end funcionando!',
-    version: '1.0.0',
-    database: 'SQLite conectado'
-  });
+// Rotas
+app.use('/', authRoutes);
+app.use('/mood', moodRoutes);
+
+// Rota inicial
+app.get('/', (req, res) => {
+  if (req.session.userId) {
+    res.redirect('/mood/calendar');
+  } else {
+    res.redirect('/login');
+  }
 });
 
 app.listen(PORT, () => {
-  console.log(` Servidor back-end rodando na porta ${PORT}`);
-  console.log(` Health check: http://localhost:${PORT}/health`);
-  console.log(` Teste API: http://localhost:${PORT}/api/test`);
+  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+  console.log(`📍 Página inicial: http://localhost:${PORT}`);
 });

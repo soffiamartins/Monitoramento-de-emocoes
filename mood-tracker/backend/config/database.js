@@ -17,7 +17,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
 });
 
 function initializeDatabase() {
-  // **TABELA USERS ATUALIZADA - COM PASSWORD**
+  // Tabela de usuários
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,7 +27,7 @@ function initializeDatabase() {
     )
   `, (err) => {
     if (err) console.error(' Erro criar tabela users:', err);
-    else console.log(' Tabela users criada/verificada (com password)');
+    else console.log(' Tabela users criada/verificada');
   });
 
   // Tabela de registros de humor
@@ -60,7 +60,7 @@ function initializeDatabase() {
     )
   `, (err) => {
     if (err) console.error(' Erro criar tabela recommendations:', err);
-    else console.log(' Tabela recommendations criada/verificada');
+    else console.log('Tabela recommendations criada/verificada');
   });
 }
 

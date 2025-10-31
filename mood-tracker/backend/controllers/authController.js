@@ -1,27 +1,64 @@
 import User from '../models/User.js';
 
-// Simulação simples de sessões (apenas para teste)
-const activeSessions = {};
-
 const authController = {
-  // CADASTRO - Registrar novo usuário
-  register: (req, res) => {
+  // Mostrar página de login
+  showLoginPage: (req, res) => {
+    res.render('login', {
+      error: null
+    });
+  },
+
+  // Processar login
+  handleLogin: (req, res) => {
     const { email, password } = req.body;
 
-    console.log('Tentativa de registro:', { email });
+    User.findByEmail(email, (err, user) => {
+      if (err) {
+        console.error('Erro ao buscar usuário:', err);
+        return res.render('login', {
+          error: 'Erro no servidor. Tente novamente.'
+        });
+      }
 
-    // Validações básicas
+      if (!user || user.password !== password) {
+        return res.render('login', {
+          error: 'Email ou senha incorretos'
+        });
+      }
+
+      // Login bem-sucedido
+      req.session.userId = user.id;
+      req.session.user = { id: user.id, email: user.email };
+
+      console.log('Login realizado:', user.email);
+      res.redirect('/mood/calendar');
+    });
+  },
+
+  // Mostrar página de cadastro
+  showRegisterPage: (req, res) => {
+    res.render('register', {
+      error: null,
+      success: null
+    });
+  },
+
+  // Processar cadastro
+  handleRegister: (req, res) => {
+    const { email, password } = req.body;
+
+    // Validação simples
     if (!email || !password) {
-      return res.status(400).json({ 
-        success: false,
-        error: 'Email e senha são obrigatórios' 
+      return res.render('register', {
+        error: 'Email e senha são obrigatórios',
+        success: null
       });
     }
 
     if (password.length < 6) {
-      return res.status(400).json({
-        success: false, 
-        error: 'Senha deve ter pelo menos 6 caracteres'
+      return res.render('register', {
+        error: 'Senha deve ter pelo menos 6 caracteres',
+        success: null
       });
     }
 
@@ -29,16 +66,16 @@ const authController = {
     User.findByEmail(email, (err, existingUser) => {
       if (err) {
         console.error('Erro ao verificar email:', err);
-        return res.status(500).json({ 
-          success: false,
-          error: 'Erro interno do servidor' 
+        return res.render('register', {
+          error: 'Erro no servidor. Tente novamente.',
+          success: null
         });
       }
 
       if (existingUser) {
-        return res.status(409).json({ 
-          success: false,
-          error: 'Este email já está cadastrado' 
+        return res.render('register', {
+          error: 'Este email já está cadastrado',
+          success: null
         });
       }
 
@@ -46,112 +83,28 @@ const authController = {
       User.create(email, password, (err, userId) => {
         if (err) {
           console.error('Erro ao criar usuário:', err);
-          return res.status(500).json({ 
-            success: false,
-            error: 'Erro ao criar usuário' 
+          return res.render('register', {
+            error: 'Erro ao criar conta. Tente novamente.',
+            success: null
           });
         }
 
-        console.log('Usuário criado com ID:', userId);
-
-        res.status(201).json({
-          success: true,
-          message: 'Usuário criado com sucesso!',
-          user: { 
-            id: userId, 
-            email: email 
-          }
+        console.log(' Novo usuário criado:', email);
+        res.render('register', {
+          error: null,
+          success: 'Conta criada com sucesso! Faça login.'
         });
       });
     });
   },
 
-  // LOGIN - Fazer login
-  login: (req, res) => {
-    const { email, password } = req.body;
-
-    console.log('Tentativa de login:', { email });
-
-    if (!email || !password) {
-      return res.status(400).json({ 
-        success: false,
-        error: 'Email e senha são obrigatórios' 
-      });
-    }
-
-    // Buscar usuário por email
-    User.findByEmail(email, (err, user) => {
+  // Logout
+  handleLogout: (req, res) => {
+    req.session.destroy((err) => {
       if (err) {
-        console.error('Erro ao buscar usuário:', err);
-        return res.status(500).json({ 
-          success: false,
-          error: 'Erro interno do servidor' 
-        });
+        console.error('Erro ao fazer logout:', err);
       }
-
-      if (!user) {
-        return res.status(401).json({ 
-          success: false,
-          error: 'Email ou senha incorretos' 
-        });
-      }
-
-      // Verificar senha (simples - sem criptografia por enquanto)
-      if (user.password !== password) {
-        return res.status(401).json({ 
-          success: false,
-          error: 'Email ou senha incorretos' 
-        });
-      }
-
-      // Criar sessão simples
-      const sessionToken = 'session_' + Date.now();
-      activeSessions[sessionToken] = { 
-        userId: user.id, 
-        email: user.email 
-      };
-
-      console.log('Login realizado para usuário:', user.id);
-
-      res.json({
-        success: true,
-        message: 'Login realizado com sucesso!',
-        user: { 
-          id: user.id, 
-          email: user.email 
-        },
-        sessionToken: sessionToken
-      });
-    });
-  },
-
-  // VERIFICAR SESSÃO (Middleware)
-  verifySession: (req, res, next) => {
-    const sessionToken = req.headers.authorization?.replace('Bearer ', '');
-
-    if (!sessionToken || !activeSessions[sessionToken]) {
-      return res.status(401).json({ 
-        success: false,
-        error: 'Sessão inválida ou expirada' 
-      });
-    }
-
-    req.user = activeSessions[sessionToken];
-    next();
-  },
-
-  // LOGOUT - Encerrar sessão
-  logout: (req, res) => {
-    const sessionToken = req.headers.authorization?.replace('Bearer ', '');
-    
-    if (sessionToken && activeSessions[sessionToken]) {
-      delete activeSessions[sessionToken];
-      console.log(' Sessão encerrada:', sessionToken);
-    }
-
-    res.json({ 
-      success: true, 
-      message: 'Logout realizado com sucesso' 
+      res.redirect('/login');
     });
   }
 };

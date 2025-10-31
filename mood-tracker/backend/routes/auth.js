@@ -3,22 +3,13 @@ import authController from '../controllers/authController.js';
 
 const router = express.Router();
 
-// ROTA: Registrar novo usuário
-router.post('/register', authController.register);
+// Páginas de autenticação
+router.get('/login', authController.showLoginPage);
+router.get('/register', authController.showRegisterPage);
+router.get('/logout', authController.handleLogout);
 
-// ROTA: Fazer login
-router.post('/login', authController.login);
-
-// ROTA: Fazer logout
-router.post('/logout', authController.logout);
-
-// ROTA PROTEGIDA: Perfil do usuário (teste de autenticação)
-router.get('/profile', authController.verifySession, (req, res) => {
-  res.json({
-    success: true,
-    message: 'Perfil acessado com sucesso!',
-    user: req.user
-  });
-});
+// Processamento de formulários
+router.post('/login', authController.handleLogin);
+router.post('/register', authController.handleRegister);
 
 export default router;

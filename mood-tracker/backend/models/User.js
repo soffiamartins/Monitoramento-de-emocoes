@@ -4,12 +4,13 @@ class User {
   // Criar usuário
   static create(email, password, callback) {
     const sql = `INSERT INTO users (email, password) VALUES (?, ?)`;
-    
-    db.run(sql, [email, password], function(err) {
+
+    db.run(sql, [email, password], function (err) {
       if (err) {
+        console.error(' Erro ao criar usuário:', err);
         return callback(err);
       }
-      // this.lastID não funciona bem com ES Modules
+      console.log(' Usuário criado com ID:', this.lastID);
       callback(null, this.lastID);
     });
   }
@@ -18,6 +19,9 @@ class User {
   static findByEmail(email, callback) {
     const sql = `SELECT * FROM users WHERE email = ?`;
     db.get(sql, [email], (err, row) => {
+      if (err) {
+        console.error(' Erro ao buscar usuário:', err);
+      }
       callback(err, row);
     });
   }
