@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Olá, <%= user.name %>!</h1>
+        <p>Bem-vindo(a) ao seu Dashboard</p>
+        <p><strong>Email:</strong> <%= user.email %></p>
+        
+        <div class="dashboard-actions">
+            <a href="/logout" class="logout-btn">Sair da Conta</a>
+        </div>
+        
+        <p><em>Sistema de humores em breve...</em></p>
+    </div>
+</body>
+</html>
