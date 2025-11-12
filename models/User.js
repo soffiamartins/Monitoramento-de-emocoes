@@ -33,6 +33,10 @@ class User {
       callback(err, row);
     });
   }
+
+  static 
+
+
 }
 
 export default User;
