@@ -4,8 +4,8 @@ class User {
   // Criar usuário
   static create(name, email, password, callback) {
     const sql = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
-    
-    db.run(sql, [name, email, password], function(err) {
+
+    db.run(sql, [name, email, password], function (err) {
       if (err) {
         console.error('Erro ao criar usuário:', err.message);
         return callback(err);
@@ -34,7 +34,7 @@ class User {
     });
   }
 
-  static 
+  static
 
 
 }

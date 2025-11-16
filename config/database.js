@@ -35,6 +35,24 @@ function initializeDatabase() {
     }
   });
 
+  // Tabela de humores
+  db.run(`CREATE TABLE IF NOT EXISTS moods (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  emoji TEXT NOT NULL,
+  mood_type TEXT NOT NULL,
+  note TEXT,
+  date TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+)`, (err) => {
+    if (err) {
+      console.error('Erro ao criar tabela moods:', err.message);
+    } else {
+      console.log('Tabela moods criada/verificada');
+    }
+  });
+
 }
 
 export default db;
