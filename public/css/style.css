@@ -16,7 +16,7 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background: rgb(215, 208, 208); /*linear-gradient(135deg, var(--primary-color), var(--secondary-color))*/
+    background: rgb(255, 255, 255); /*linear-gradient(135deg, var(--primary-color), var(--secondary-color))*/
     min-height: 100vh;
     color: var(--text-light);
 }
