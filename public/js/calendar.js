@@ -9,10 +9,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const emojiOptions = document.querySelectorAll('.emoji-option');
     const moodNote = document.getElementById('moodNote');
 
+    // Elementos do card de Humor Semanal
+    const weeklyEmojiEl = document.getElementById('weeklyMoodEmoji');
+    const weeklyTextEl = document.getElementById('weeklyMoodText');
+    const weeklyLabelEl = document.getElementById('weeklyMoodLabel'); // "Predominante", "Misto", etc.
+
+
     // Variáveis de estado
     let selectedDate = '';
     let selectedEmoji = '';
     let selectedMood = '';
+    let monthlyMoodChart = null;
 
     // Calendário
     const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
@@ -32,6 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
             updatePopupDate(selectedDate);
             resetPopup();
             showPopup();
+
+            // Atualizar card de humor semanal para a semana dessa data
+            loadWeeklyMood(selectedDate);
         },
 
         // Carregar eventos já salvos
@@ -66,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }));
 
                     successCallback(events);
+                    loadMonthlyMoodSummary(fetchInfo.startStr, fetchInfo.endStr); //////
                 })
                 .catch(err => {
                     console.error('Erro ao carregar humores:', err);
@@ -76,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Renderiza o calendário
     calendar.render();
+    loadWeeklyMood();
 
     // ================== Funções do Popup ==================
     function showPopup() {
@@ -107,6 +119,60 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         popupDate.textContent = formattedDate;
     }
+
+    // ===============Funções do Humor predominante ==============
+    function capitalizeFirst(str) {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // Chama a API do humor semanal
+    async function loadWeeklyMood(referenceDate) {
+        try {
+            const params = referenceDate ? `?date=${referenceDate}` : '';
+            const response = await fetch(`/api/moods/weekly-summary${params}`);
+
+            if (!response.ok) {
+                throw new Error('Erro ao buscar humor semanal');
+            }
+
+            const data = await response.json();
+            updateWeeklyMoodCard(data);
+        } catch (err) {
+            console.error(err);
+            if (weeklyEmojiEl) weeklyEmojiEl.textContent = '⚠️';
+            if (weeklyTextEl) weeklyTextEl.textContent = 'Erro ao carregar humor semanal';
+            if (weeklyLabelEl) weeklyLabelEl.textContent = 'Erro';
+        }
+    }
+
+    // Atualiza o card na tela
+    function updateWeeklyMoodCard(data) {
+        if (!weeklyEmojiEl || !weeklyTextEl || !weeklyLabelEl) return;
+
+        // Sem dados
+        if (!data.hasData) {
+            weeklyEmojiEl.textContent = '😶';
+            weeklyLabelEl.textContent = 'Sem dados';
+            weeklyTextEl.textContent = 'Nenhum humor registrado nesta semana.';
+            return;
+        }
+
+        // Emoções mistas (empate)
+        if (data.isMixed) {
+            weeklyEmojiEl.textContent = '😐';
+            weeklyLabelEl.textContent = 'Emoções mistas';
+            weeklyTextEl.textContent = 'Semana com emoções variadas.';
+            return;
+        }
+
+        // Predominante
+        const mood = data.mood; // { emoji, mood_type, total }
+        weeklyEmojiEl.textContent = mood.emoji;
+        weeklyLabelEl.textContent = 'Predominante';
+        weeklyTextEl.textContent = capitalizeFirst(mood.mood_type);
+    }
+
 
     // ================== Event Listeners ==================
     closePopup.addEventListener('click', hidePopup);
@@ -158,6 +224,9 @@ document.addEventListener('DOMContentLoaded', function () {
             // Atualiza eventos sem recarregar a página
             calendar.refetchEvents();
 
+            //ATUALIZA O HUMOR SEMANAL COM A SEMANA DA DATA SALVA
+            loadWeeklyMood(date);
+
             hidePopup();
         } catch (err) {
             alert('Erro ao salvar humor: ' + err.message);
@@ -171,6 +240,104 @@ document.addEventListener('DOMContentLoaded', function () {
 
         alert(message);
     }
+
+    //=======FUNÇÕES CALENDARIO MENSAL ===============
+    // Buscar resumo mensal (ou do intervalo visível)
+async function loadMonthlyMoodSummary(start, end) {
+    const emptyMsgEl = document.getElementById('monthlyMoodEmpty');
+
+    try {
+        const params = new URLSearchParams({ start, end });
+        const response = await fetch(`/api/moods/summary?${params.toString()}`);
+
+        if (!response.ok) {
+            throw new Error('Erro ao buscar resumo de humores');
+        }
+
+        const data = await response.json();
+        console.log('Resumo de humores (mensal):', data);
+
+        renderMonthlyMoodChart(data.summary || []);
+    } catch (err) {
+        console.error(err);
+        if (emptyMsgEl) {
+            emptyMsgEl.style.display = 'block';
+            emptyMsgEl.textContent = 'Erro ao carregar gráfico.';
+        }
+        if (monthlyMoodChart) {
+            monthlyMoodChart.destroy();
+            monthlyMoodChart = null;
+        }
+    }
+}
+
+// Desenhar/atualizar o gráfico de pizza
+function renderMonthlyMoodChart(summary) {
+    const canvas = document.getElementById('monthlyMoodPie');
+    const emptyMsgEl = document.getElementById('monthlyMoodEmpty');
+
+    if (!canvas) {
+        console.warn('Canvas #monthlyMoodPie não encontrado');
+        return;
+    }
+
+    // Sem dados no período
+    if (!summary || summary.length === 0) {
+        if (emptyMsgEl) {
+            emptyMsgEl.style.display = 'block';
+            emptyMsgEl.textContent = 'Nenhum humor registrado neste período.';
+        }
+        if (monthlyMoodChart) {
+            monthlyMoodChart.destroy();
+            monthlyMoodChart = null;
+        }
+        return;
+    }
+
+    if (emptyMsgEl) {
+        emptyMsgEl.style.display = 'none';
+    }
+
+    const labels = summary.map(item => capitalizeFirst(item.mood_type));
+    const counts = summary.map(item => item.total);
+    const backgroundColors = summary.map(item => getMoodColor(item.mood_type));
+
+    // Se já existir gráfico, destruir antes de redesenhar
+    if (monthlyMoodChart) {
+        monthlyMoodChart.destroy();
+    }
+
+    const ctx = canvas.getContext('2d');
+
+    monthlyMoodChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: counts,
+                backgroundColor: backgroundColors
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        boxWidth: 12,
+                        padding: 12
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Helper para deixar o texto bonitinho
+function capitalizeFirst(str) {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 
     // Função para definir cores baseadas no humor
     function getMoodColor(moodType) {
@@ -186,4 +353,6 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         return colors[moodType] || '#6C757D';
     }
+
+
 });

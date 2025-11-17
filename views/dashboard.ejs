@@ -9,8 +9,11 @@
     </title>
     <link rel="stylesheet" href="/css/style.css">
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/css/calendar.css">
     <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/card.css">
+    <link rel="stylesheet" href="/css/cardmensal.css">
 
 </head>
 
@@ -18,20 +21,20 @@
 
     <!--  ==================ASIDE NAVBAR ============================-->
     <div class="sidebar">
-  <div class="sidebar-header">
-    <h1 class="logo">MoodBit<span>.</span></h1>
-    <div class="avatar"></div>
-  </div>
+        <div class="sidebar-header">
+            <h1 class="logo">MoodBit<span>.</span></h1>
+            <div class="avatar"></div>
+        </div>
 
-  <div class="sidebar-divider"></div>
+        <div class="sidebar-divider"></div>
 
-  <nav class="sidebar-menu">
-    <a href="#" class="menu-item">Home</a>
-    <a href="#" class="menu-item">Calendário</a>
-    <a href="#" class="menu-item">Configurações</a>
-    <a href="/logout" class="menu-item">Sair</a>
-  </nav>
-</div>
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item">Home</a>
+            <a href="#" class="menu-item">Calendário</a>
+            <a href="#" class="menu-item">Configurações</a>
+            <a href="/logout" class="menu-item">Sair</a>
+        </nav>
+    </div>
     <!-- -->
 
     <!-- ====================CALENDÁRIO ====================================== -->
@@ -40,7 +43,38 @@
             <h4>Calendário de Humores</h4>
             <div id="calendar"></div>
         </div>
-<!-- 
+
+        <!--============== CARD DE HUMOR SEMANAL ================================-->
+        <div class="weekly-mood-card">
+            <div class="weekly-mood-header">
+                <span>Humor Semanal</span>
+            </div>
+
+            <p id="weeklyMoodLabel" class="weekly-mood-label">Predominante</p>
+
+            <div id="weeklyMoodEmoji" class="weekly-mood-emoji">
+                🙂
+            </div>
+
+            <p id="weeklyMoodText" class="weekly-mood-text">
+                Nenhum dado ainda.
+            </p>
+        </div>
+
+<!-- ======================CARD – HUMOR MENSAL (GRÁFICO DE PIZZA)================= -->
+<div class="monthly-mood-card">
+  <div class="monthly-mood-header">
+    Humor Mensal
+  </div>
+
+  <canvas id="monthlyMoodPie"></canvas>
+
+  <p id="monthlyMoodEmpty" class="monthly-mood-empty" style="display:none;">
+    Nenhum humor registrado neste período.
+  </p>
+</div>
+
+        <!-- 
     <div class="container">
         <h1>Olá, <%= user.name %>!</h1>
         <p>Bem-vindo(a) ao seu Dashboard</p>

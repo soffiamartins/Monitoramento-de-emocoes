@@ -1,0 +1,57 @@
+/* CARD – HUMOR SEMANAL */
+.weekly-mood-card {
+    width: 280px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px 20px 28px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+     height: 300px;
+     margin-top: 60px;
+     margin-left: 30px;
+     
+}
+
+/* Título "Humor Semanal" */
+.weekly-mood-header {
+    width: 100%;
+    font-size: 12px;
+    font-weight: 500;
+    color: #8c8c98;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #f0f0f5;
+    padding-bottom: 8px;
+}
+
+/* Texto "Predominante / Emoções mistas / Sem dados" */
+.weekly-mood-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #20202a;
+    margin: 8px 0 18px;
+}
+
+/* Emoji grandão no meio do card */
+.weekly-mood-emoji {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: #f7f78f;        /* amarelinho de fundo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    margin-bottom: 18px;
+}
+
+/* Texto embaixo do emoji (Feliz, Triste, Emoções mistas...) */
+.weekly-mood-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #34343f;
+    text-align: center;
+}
