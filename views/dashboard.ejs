@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/card.css">
     <link rel="stylesheet" href="/css/cardmensal.css">
+    <link rel="stylesheet" href="/css/recomendacao.css">
 
 </head>
 
@@ -35,44 +36,72 @@
             <a href="/logout" class="menu-item">Sair</a>
         </nav>
     </div>
-    <!-- -->
-
-    <!-- ====================CALENDÁRIO ====================================== -->
+    <!-- ======== CONTEUDO PRINCIPAL ============================= -->
     <div class="calendar-component">
-        <div class="calendar-container">
-            <h4>Calendário de Humores</h4>
-            <div id="calendar"></div>
-        </div>
-
-        <!--============== CARD DE HUMOR SEMANAL ================================-->
-        <div class="weekly-mood-card">
-            <div class="weekly-mood-header">
-                <span>Humor Semanal</span>
-            </div>
-
-            <p id="weeklyMoodLabel" class="weekly-mood-label">Predominante</p>
-
-            <div id="weeklyMoodEmoji" class="weekly-mood-emoji">
-                🙂
-            </div>
-
-            <p id="weeklyMoodText" class="weekly-mood-text">
-                Nenhum dado ainda.
-            </p>
-        </div>
-
-<!-- ======================CARD – HUMOR MENSAL (GRÁFICO DE PIZZA)================= -->
-<div class="monthly-mood-card">
-  <div class="monthly-mood-header">
-    Humor Mensal
+  <!-- COLUNA ESQUERDA: CALENDÁRIO -->
+  <div class="calendar-container">
+      <h4>Calendário de Humores</h4>
+      <div id="calendar"></div>
   </div>
 
-  <canvas id="monthlyMoodPie"></canvas>
+  <!-- COLUNA DIREITA: CARDS + RECOMENDAÇÕES -->
+  <div class="right-panel">
 
-  <p id="monthlyMoodEmpty" class="monthly-mood-empty" style="display:none;">
-    Nenhum humor registrado neste período.
-  </p>
-</div>
+      <!-- LINHA COM OS DOIS CARDS -->
+      <div class="cards-row">
+          <!--============== CARD DE HUMOR SEMANAL ================================-->
+          <div class="weekly-mood-card">
+              <div class="weekly-mood-header">
+                  <span>Humor Semanal</span>
+              </div>
+
+              <p id="weeklyMoodLabel" class="weekly-mood-label">Predominante</p>
+
+              <div id="weeklyMoodEmoji" class="weekly-mood-emoji">
+                  🙂
+              </div>
+
+              <p id="weeklyMoodText" class="weekly-mood-text">
+                  Nenhum dado ainda.
+              </p>
+          </div>
+
+          <!-- ======================CARD – HUMOR MENSAL (GRÁFICO DE PIZZA)================= -->
+          <div class="monthly-mood-card">
+              <div class="monthly-mood-header">
+                  Humor Mensal
+              </div>
+
+              <canvas id="monthlyMoodPie"></canvas>
+
+              <p id="monthlyMoodEmpty" class="monthly-mood-empty" style="display:none;">
+                  Nenhum humor registrado neste período.
+              </p>
+          </div>
+      </div>
+
+      <!-- ======== RECOMENDAÇÕES (FICA EMBAIXO DOS CARDS) ====================-->
+      <section id="weekly-recommendations" class="recommendations" style="display:none;">
+          <h3>Recomendações da semana</h3>
+          <p class="recommendation-message"></p>
+
+          <div class="recommendation-grid">
+              <div class="rec-column rec-filmes">
+                  <h4>Filmes</h4>
+                  <!-- JS coloca os cards aqui -->
+              </div>
+
+              <div class="rec-column rec-musicas">
+                  <h4>Músicas</h4>
+                  <!-- JS coloca os cards aqui -->
+              </div>
+          </div>
+      </section>
+
+  </div> <!-- /right-panel -->
+</div> <!-- /calendar-component -->
+    
+
 
         <!-- 
     <div class="container">
