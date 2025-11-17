@@ -3,12 +3,15 @@ import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+
 // Importar banco de dados
 import './config/database.js';
 
 // Importar rotas
 import authRoutes from './routes/authRoutes.js';
 import pageRoutes from './routes/pageRoutes.js';
+import moodsRouter from './routes/moodsRouters.js';
+
 
 
 // Configurar caminhos
@@ -55,6 +58,7 @@ app.use((req, res, next) => {
 // ======================
 app.use('/', pageRoutes);
 app.use('/', authRoutes);
+app.use('/api/moods', moodsRouter);
 
 
 // ======================

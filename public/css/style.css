@@ -16,7 +16,7 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: rgb(215, 208, 208); /*linear-gradient(135deg, var(--primary-color), var(--secondary-color))*/
     min-height: 100vh;
     color: var(--text-light);
 }
@@ -25,10 +25,12 @@ body {
 .home-container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     min-height: 100vh;
     padding: 20px;
-    text-align: center;
+    text-align: left;              /* opcional, pra não centralizar textos */
+    padding-top: 40px;
+    padding-left: 210px; 
 }
 
 .home-content {

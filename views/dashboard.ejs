@@ -1,23 +1,138 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
     <link rel="stylesheet" href="/css/style.css">
-   
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+    <link rel="stylesheet" href="/css/calendar.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+
 </head>
+
 <body>
+
+    <!--  ==================ASIDE NAVBAR ============================-->
+    <div class="sidebar">
+  <div class="sidebar-header">
+    <h1 class="logo">MoodBit<span>.</span></h1>
+    <div class="avatar"></div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <nav class="sidebar-menu">
+    <a href="#" class="menu-item">Home</a>
+    <a href="#" class="menu-item">Calendário</a>
+    <a href="#" class="menu-item">Configurações</a>
+    <a href="/logout" class="menu-item">Sair</a>
+  </nav>
+</div>
+    <!-- -->
+
+    <!-- ====================CALENDÁRIO ====================================== -->
+    <div class="calendar-component">
+        <div class="calendar-container">
+            <h4>Calendário de Humores</h4>
+            <div id="calendar"></div>
+        </div>
+<!-- 
     <div class="container">
         <h1>Olá, <%= user.name %>!</h1>
         <p>Bem-vindo(a) ao seu Dashboard</p>
-        <p><strong>Email:</strong> <%= user.email %></p>
-        
+
         <div class="dashboard-actions">
             <a href="/logout" class="logout-btn">Sair da Conta</a>
         </div>
-        
-        <p><em>Sistema de humores em breve...</em></p>
     </div>
+
+-->
+        <!-- =================POPUP ====================================== -->
+
+        <!-- Popup de Registro de Humor -->
+        <div id="moodPopup" class="popup-overlay" style="display: none;">
+            <div class="popup-content">
+                <div class="popup-header">
+                    <h3>Como você está se sentindo?</h3>
+                    <span class="close-popup">&times;</span>
+                </div>
+
+                <div class="popup-body">
+                    <!-- Data Selecionada -->
+                    <div class="selected-date">
+                        <strong>Data:</strong> <span id="popupDate">01/01/2024</span>
+                    </div>
+
+                    <!-- Seleção de Emojis -->
+                    <div class="emoji-section">
+                        <h4>Selecione seu humor:</h4>
+                        <div class="emoji-grid">
+                            <div class="emoji-option" data-emoji="😊" data-mood="feliz">
+                                <span class="emoji">😊</span>
+                                <span class="mood-label">Feliz</span>
+                            </div>
+                            <div class="emoji-option" data-emoji="😢" data-mood="triste">
+                                <span class="emoji">😢</span>
+                                <span class="mood-label">Triste</span>
+                            </div>
+                            <div class="emoji-option" data-emoji="😰" data-mood="ansioso">
+                                <span class="emoji">😰</span>
+                                <span class="mood-label">Ansioso</span>
+                            </div>
+                            <div class="emoji-option" data-emoji="😠" data-mood="irritado">
+                                <span class="emoji">😠</span>
+                                <span class="mood-label">Irritado</span>
+                            </div>
+                            <div class="emoji-option" data-emoji="😴" data-mood="cansado">
+                                <span class="emoji">😴</span>
+                                <span class="mood-label">Cansado</span>
+                            </div>
+                            <div class="emoji-option" data-emoji="😐" data-mood="neutro">
+                                <span class="emoji">😐</span>
+                                <span class="mood-label">Neutro</span>
+                            </div>
+                            <div class="emoji-option" data-emoji="🤩" data-mood="motivado">
+                                <span class="emoji">🤩</span>
+                                <span class="mood-label">Motivado</span>
+                            </div>
+                            <div class="emoji-option" data-emoji="😌" data-mood="calmo">
+                                <span class="emoji">😌</span>
+                                <span class="mood-label">Calmo</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campo de Anotação -->
+                    <div class="note-section">
+                        <label for="moodNote"><strong>Por que você se sente assim?</strong></label>
+                        <textarea id="moodNote" placeholder="Descreva brevemente o que está sentindo ou o motivo..."
+                            rows="4"></textarea>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="popup-actions">
+                        <button id="cancelMood" class="btn-cancel">Cancelar</button>
+                        <button id="saveMood" class="btn-save" disabled>Salvar Humor</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- -->
+
+
+
+
+    <!--================================ SCRIPTS ============================================= -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/pt-br.js'></script>
+    <script src="/js/calendar.js"></script>
+
 </body>
+
 </html>
