@@ -21,6 +21,13 @@ body {
     color: var(--text-light);
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* remove scroll horizontal */
+}
+
 /* ===== ESTILOS DA HOME ===== */
 .home-container {
     display: flex;
