@@ -1,0 +1,142 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Jost", sans-serif;
+}
+
+
+body {
+    background-color: #344284;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    background-color: #344284;
+    padding: 40px;
+}
+
+.form-section {
+    flex: 1;
+    background-color: #D7D7D7;
+    padding: 40px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#titulo {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #000;
+    text-align: center;
+}
+
+#subtitulo {
+    margin-bottom: 20px;
+    color: #00000073;
+    text-align: center;
+    font-weight: 800;
+}
+
+.buttons-top {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.buttons-top button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #f8f8f8;
+    width: 100px;
+    height: 40px;
+}
+
+.register-button button{
+    background-color: #6E82D4;
+    color: #fff;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+input {
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.submit-btn {
+    background-color: #6E82D4;
+    border: none;
+    border-radius: 10px;
+    height: 40px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #434e7c;
+}
+
+.link {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.link a {
+    color: #000;
+    text-decoration: none;
+    font-style: italic;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .logo {
+        font-size: 2rem;
+        padding: 20px;
+    }
+
+    .form-section {
+        padding: 20px;
+    }
+}
