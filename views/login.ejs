@@ -1,175 +1,262 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
-/* ===== RESET E VARIÁVEIS GLOBAIS ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-:root {
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
-    --error-color: #ff6b6b;
-    --success-color: #51cf66;
-    --text-light: white;
-    --text-dark: #333;
-}
+        :root {
+            --primary-bg-color: #344284;
+            --card-bg-color: #d8d8d8;
+            --button-bg-color: #6b83d2;
+            --button-hover-color: #2e306b;
+            --input-border-color: #ccc;
+            --text-light: white;
+            --card-text-color: #333;
+        }
 
-body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    min-height: 100vh;
-    color: var(--text-light);
-}
+        body {
+            font-family: "Roboto", sans-serif;
+            background-color: var(--primary-bg-color);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
 
-/* ===== COMPONENTES GLOBAIS (úteis se usar botões/links genéricos) ===== */
-.btn {
-    display: inline-block;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-}
+        .layout {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-.btn-primary { background: var(--primary-color); color: var(--text-light); }
-.btn-primary:hover { background: #5a6fd8; transform: translateY(-2px); }
+        .left {
+            font-size: 3.6rem;
+            font-weight: 700;
+            padding-left: 40px;
+        }
 
-.btn-secondary { background: transparent; color: var(--text-light); border: 2px solid var(--text-light); }
-.btn-secondary:hover { background: var(--text-light); color: var(--primary-color); }
+        .right .container {
+            background-color: var(--card-bg-color);
+            padding: 40px;
+            border-radius: 12px;
+            width: 420px;
+            color: var(--card-text-color);
+        }
 
-/* ===== UTILITÁRIOS ===== */
-.text-center { text-align: center; }
-.mt-1 { margin-top: 1rem; }
-.mt-2 { margin-top: 2rem; }
-.mb-1 { margin-bottom: 1rem; }
-.mb-2 { margin-bottom: 2rem; }
+        .title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
 
-/* ===== LAYOUT DE AUTENTICAÇÃO ===== */
-.auth-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 20px;
-}
+        .subtitle {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
 
-.auth-card {
-    background: rgba(255,255,255,0.1);
-    padding: 2.5rem;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    max-width: 400px;
-    width: 100%;
-}
+        .top-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
 
-.auth-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
+        .top-buttons button {
+            width: 120px; 
+            padding: 10px 0;
+            border-radius: 6px;
+            border: none;
+            background-color: #fff8f8;
+            cursor: pointer;
+        }
 
-.auth-title {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-}
 
-.auth-subtitle {
-    opacity: 0.8;
-    margin-bottom: 0.5rem;
-}
+        .top-buttons .main {
+            background-color: var(--button-bg-color);
+            color: white;
+        }
 
-/* ===== FORMULÁRIOS ===== */
-.auth-form { margin-bottom: 1.5rem; }
+        .top-buttons .main:hover {
+            background-color: var(--button-hover-color);
+        }
 
-.form-group { margin-bottom: 1.5rem; }
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--input-border-color);
+            margin-bottom: 15px;
+        }
 
-.form-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
+        button.submit {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            background-color: var(--button-bg-color);
+            color: var(--text-light);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 5px;
+        }
 
-.form-input {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    background: rgba(255,255,255,0.9);
-    color: var(--text-dark);
-    transition: outline 0.3s;
-}
+        button.submit:hover {
+            background-color: var(--button-hover-color);
+        }
 
-.form-input:focus { outline: 2px solid var(--primary-color); }
+        .links {
+            margin-top: 15px;
+            text-align: center;
+        }
 
-.form-submit {
-    width: 100%;
-    padding: 12px;
-    background: var(--primary-color);
-    color: var(--text-light);
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
-}
+        .links a {
+            display: block;
+            color: var(--button-bg-color);
+            font-size: 0.9rem;
+            text-decoration: none;
+            margin-top: 6px;
+        }
 
-.form-submit:hover { background: #5a6fd8; }
+        .links a:hover {
+            text-decoration: underline;
+        }
 
-/* ===== MENSAGENS ===== */
-.alert {
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    text-align: center;
-}
+ 
 
-.alert-error { background: var(--error-color); color: var(--text-light); }
-.alert-success { background: var(--success-color); color: var(--text-light); }
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
 
-/* ===== LINKS ===== */
-.auth-links { text-align: center; }
+        .eye-icon {
+            width: 22px;
+            height: 22px;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
 
-.auth-link {
-    color: var(--text-light);
-    text-decoration: none;
-    display: block;
-    margin: 0.5rem 0;
-    transition: opacity 0.3s;
-}
+            stroke: #ffffff;
+            fill: #555555;
+        }
 
-.auth-link:hover { opacity: 0.8; text-decoration: underline; }
-</style>
+        .hidden {
+            display: none;
+        }
 
+        @media(max-width: 900px) {
+            .layout {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .left {
+                margin-bottom: 35px;
+                padding: 0;
+            }
+        }
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: #b5b5b5;
+            margin: 20px 0;
+            opacity: 0.8;
+        }
+
+    </style>
 </head>
-<body>
-    <div class="container">
-        <h1> Login</h1>
-        
-        <% if (error) { %>
-            <div class="error"><%= error %></div>
-        <% } %>
 
-        <form method="POST" action="/login">
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Senha" required>
-            <button type="submit">Entrar</button>
-        </form>
-        
-        <a href="/register">Criar conta</a>
-        <a href="/">Voltar para início</a>
+<body>
+
+    <div class="layout">
+
+        <div class="left">MoodBit.</div>
+
+        <div class="right">
+            <div class="container">
+
+                <div class="title">Comece sua jornada.</div>
+                <div class="subtitle">Acompanhe suas emoções diariamente</div>
+
+                <div class="top-buttons">
+                    <button class="main">Entrar</button>
+                    <button onclick="window.location.href='/register'">Criar conta</button>
+                </div>
+                <div class="divider"></div>
+
+
+                <% if (error) { %>
+                <div class="error"><%= error %></div>
+                <% } %>
+
+                <form method="POST" action="/login">
+
+                    <input type="email" name="email" placeholder="Email" required>
+
+              
+                    <div class="password-wrapper">
+                        <input type="password" name="password" id="password" placeholder="Senha" required>
+
+                        <svg id="icon-eye" class="eye-icon" viewBox="0 0 24 24">
+                            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+
+                        <svg id="icon-eye-off" class="eye-icon hidden" viewBox="0 0 24 24">
+                            <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.77 21.77 0 0 1 5.06-6.94" />
+                            <path d="M1 1l22 22" />
+                        </svg>
+                    </div>
+
+                    <button type="submit" class="submit">Entrar na minha conta</button>
+                </form>
+
+                <div class="links">
+                    <a href="#">Esqueceu a senha?</a>
+                </div>
+
+            </div>
+        </div>
+
     </div>
+
+
+    <script>
+        const passwordInput = document.getElementById("password");
+        const eye = document.getElementById("icon-eye");
+        const eyeOff = document.getElementById("icon-eye-off");
+
+        eye.addEventListener("click", () => {
+            passwordInput.type = "text";
+            eye.classList.add("hidden");
+            eyeOff.classList.remove("hidden");
+        });
+
+        eyeOff.addEventListener("click", () => {
+            passwordInput.type = "password";
+            eyeOff.classList.add("hidden");
+            eye.classList.remove("hidden");
+        });
+    </script>
+
 </body>
+
 </html>
