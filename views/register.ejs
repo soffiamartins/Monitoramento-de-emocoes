@@ -26,8 +26,8 @@
             <p id="subtitulo">Acompanhe suas emoções diariamente</p>
 
             <div class="buttons-top">
-                <a href="/login.ejs" class="login-button"><button type="button">Entrar</button></a>
-                <a href="/register.ejs" class="register-button"><button type="button">Criar conta</button></a>
+                <a href="/login" class="login-button"><button type="button">Entrar</button></a>
+                <a href="/register" class="register-button"><button type="button">Criar conta</button></a>
             </div>
 
             <hr>
@@ -44,7 +44,7 @@
                         </div>
                         <% } %>
 
-                            <form method="POST" action="/views/register.ejs">
+                            <form method="POST" action="/register">
                                 <input type="text" name="name" placeholder="Nome" required>
                                 <input type="email" name="email" placeholder="E-mail" required>
                                 <input type="password" name="password" placeholder="Senha" required>
@@ -54,7 +54,7 @@
                             </form>
 
                             <div class="link">
-                                <a href="/views/login.ejs">Já possui conta?</a>
+                                <a href="/login">Já possui conta?</a>
                             </div>
         </div>
 
