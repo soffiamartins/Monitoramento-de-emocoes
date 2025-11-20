@@ -259,4 +259,48 @@ router.get('/summary', (req, res) => {
   });
 }); // Quando muda o mês no calendário, o gráfico muda junto
 
+//========================================================
+// Atualizar humor (editar registro existente)
+router.put('/:id', (req, res) => {
+  const userId = req.session.user.id;
+  const { id } = req.params;
+  const { emoji, mood_type, note, date } = req.body;
+
+  const sql = `
+    UPDATE moods
+    SET emoji = ?, mood_type = ?, note = ?, date = ?
+    WHERE id = ? AND user_id = ?
+  `;
+
+  db.run(sql, [emoji, mood_type, note, date, id, userId], function (err) {
+    if (err) {
+      console.error('Erro ao atualizar humor:', err.message);
+      return res.status(500).json({ error: 'Erro ao atualizar humor' });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'Registro não encontrado' });
+    }
+    return res.json({ success: true });
+  });
+});
+
+// Excluir humor
+router.delete('/:id', (req, res) => {
+  const userId = req.session.user.id;
+  const { id } = req.params;
+
+  const sql = `DELETE FROM moods WHERE id = ? AND user_id = ?`;
+
+  db.run(sql, [id, userId], function (err) {
+    if (err) {
+      console.error('Erro ao excluir humor:', err.message);
+      return res.status(500).json({ error: 'Erro ao excluir humor' });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'Registro não encontrado' });
+    }
+    return res.json({ success: true });
+  });
+});
+
 export default router;

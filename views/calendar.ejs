@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/calendar.css">
+  <link rel="stylesheet" href="/css/calendarPage.css"><!-- novo CSS só desta página -->
+
+  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+</head>
+
+<body>
+  <!--  ==================ASIDE NAVBAR ============================-->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h1 class="logo">MoodBit<span>.</span></h1>
+      <div class="avatar"></div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <nav class="sidebar-menu">
+      <a href="/dashboard" class="menu-item">Home</a>
+      <a href="/calendar" class="menu-item active">Calendário</a>
+      <a href="#" class="menu-item">Configurações</a>
+      <a href="/logout" class="menu-item">Sair</a>
+    </nav>
+  </div>
+
+  <!-- ======== CONTEÚDO PRINCIPAL ============================= -->
+  <div class="calendar-page">
+    <!-- COLUNA ESQUERDA: CALENDÁRIO -->
+    <div class="calendar-page-calendar">
+      <h4>Calendário de Humores</h4>
+      <div id="calendar"></div>
+    </div>
+
+    <!-- COLUNA DIREITA: PAINEL LATERAL DO DIA -->
+    <div class="calendar-day-panel" id="dayPanel">
+      <div class="day-panel-header">
+        <span>Humor no dia</span>
+        <span id="dayDateLabel">--/--/----</span>
+      </div>
+
+      <div class="day-panel-emoji">
+        <span id="dayEmoji" class="day-emoji">🙂</span>
+        <span id="dayMoodLabel" class="day-mood-label">Selecione um dia</span>
+      </div>
+
+      <!-- grade de emojis -->
+      <div class="day-panel-emojis">
+        <div class="emoji-option" data-emoji="😊" data-mood="feliz">
+          <span class="emoji">😊</span>
+          <span class="mood-label">Feliz</span>
+        </div>
+        <div class="emoji-option" data-emoji="😢" data-mood="triste">
+          <span class="emoji">😢</span>
+          <span class="mood-label">Triste</span>
+        </div>
+        <div class="emoji-option" data-emoji="😰" data-mood="ansioso">
+          <span class="emoji">😰</span>
+          <span class="mood-label">Ansioso</span>
+        </div>
+        <div class="emoji-option" data-emoji="😠" data-mood="irritado">
+          <span class="emoji">😠</span>
+          <span class="mood-label">Irritado</span>
+        </div>
+        <div class="emoji-option" data-emoji="😴" data-mood="cansado">
+          <span class="emoji">😴</span>
+          <span class="mood-label">Cansado</span>
+        </div>
+        <div class="emoji-option" data-emoji="😐" data-mood="neutro">
+          <span class="emoji">😐</span>
+          <span class="mood-label">Neutro</span>
+        </div>
+        <div class="emoji-option" data-emoji="🤩" data-mood="motivado">
+          <span class="emoji">🤩</span>
+          <span class="mood-label">Motivado</span>
+        </div>
+        <div class="emoji-option" data-emoji="😌" data-mood="calmo">
+          <span class="emoji">😌</span>
+          <span class="mood-label">Calmo</span>
+        </div>
+      </div>
+
+      <!-- anotação -->
+      <div class="day-panel-note">
+        <label for="moodNote"><strong>Anotação do dia</strong></label>
+        <textarea id="moodNote"
+          placeholder="Escreva aqui o que aconteceu, como se sentiu..."
+          rows="5"></textarea>
+      </div>
+
+      <!-- botões -->
+      <div class="day-panel-actions">
+        <button id="saveMood" class="btn-save" disabled>Salvar</button>
+        <button id="deleteMood" class="btn-delete" style="display:none;">Excluir</button>
+      </div>
+
+      <p id="dayInfoText" class="day-info-text">
+        Selecione um dia no calendário para ver, criar ou editar seu humor.
+      </p>
+    </div>
+  </div>
+
+  <!--================================ SCRIPTS ============================================= -->
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/pt-br.js'></script>
+  <script src="/js/calendar-page.js"></script> <!-- JS específico desta página -->
+</body>
+
+</html>
