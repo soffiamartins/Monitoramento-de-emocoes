@@ -46,7 +46,6 @@ function openMoodModal(date) {
   // Aqui você pode abrir um modal com os emojis e campo de anotação
   // Passando a data selecionada
   console.log('Data selecionada:', date);
-  // Sua lógica de emojis aqui...
 }
 
 // Função para definir cores baseadas no humor

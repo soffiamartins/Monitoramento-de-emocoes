@@ -111,16 +111,27 @@ document.addEventListener('DOMContentLoaded', function () {
         saveBtn.disabled = true;
     }
 
-    function updatePopupDate(dateString) {
-        const date = new Date(dateString);
-        const formattedDate = date.toLocaleDateString('pt-BR', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-        popupDate.textContent = formattedDate;
+function updatePopupDate(dateString) {
+    if (!dateString) {
+        popupDate.textContent = '';
+        return;
     }
+
+    // dateString vem no formato 'YYYY-MM-DD'
+    const [year, month, day] = dateString.split('-').map(Number);
+
+    // Aqui usamos o construtor com ano, mês (0-11) e dia -> usa fuso local, sem perder 1 dia
+    const date = new Date(year, month - 1, day);
+
+    const formattedDate = date.toLocaleDateString('pt-BR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    popupDate.textContent = formattedDate;
+}
 
     // ===============Funções do Humor predominante ==============
     function capitalizeFirst(str) {

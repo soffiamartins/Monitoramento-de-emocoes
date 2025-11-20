@@ -124,6 +124,10 @@
   color: #333;
 }
 
+#popupDate{
+  color: #333;
+}
+
 .close-popup {
   font-size: 24px;
   cursor: pointer;

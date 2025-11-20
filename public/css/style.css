@@ -15,7 +15,7 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: "Jost", sans-serif;
     background: rgb(255, 255, 255); /*linear-gradient(135deg, var(--primary-color), var(--secondary-color))*/
     min-height: 100vh;
     color: var(--text-light);
