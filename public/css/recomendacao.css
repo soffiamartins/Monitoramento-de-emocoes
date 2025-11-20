@@ -1,76 +1,49 @@
-/* Componente de recomendações (dentro da coluna direita) */
 .recommendations {
-    background: #fff;
-    border-radius: 16px;
-    padding: 16px 20px 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    color: #333;
-    width: 600px;
-    margin-left: 30px;
-
-
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px 20px 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  color: #333;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-.recommendations h3 {
-    margin-bottom: 8px;
-    font-size: 1.1rem;
-}
-
-.recommendation-message {
-    margin-bottom: 16px;
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
-/* grid interna: filmes em cima, músicas embaixo (ou lado a lado se quiser) */
-.recommendation-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.rec-column h4 {
-    margin-bottom: 6px;
-    font-size: 0.95rem;
-}
-
-/* cartão de recomendação */
+/* cards de filmes e músicas */
 .rec-card {
-    display: flex;
-    gap: 10px;
-    background: rgba(255,255,255,0.95);
-    border-radius: 10px;
-    padding: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    align-items: center;
+  display: flex;
+  align-items: center;        /* centraliza verticalmente imagem + texto */
+  gap: 10px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  text-decoration: none;
 }
 
+/* imagem */
 .rec-card img {
-    width: 60px;
-    height: 60px;
-    border-radius: 8px;
-    object-fit: cover;
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* wrapper do texto */
+.rec-info {
+  display: flex;
+  flex-direction: column;
 }
 
 .rec-info h5 {
-    margin-bottom: 2px;
-    font-size: 0.9rem;
-    color: #222;
+  margin: 0 0 2px;
+  font-size: 0.9rem;
+  color: #222;
 }
 
 .rec-info p {
-    font-size: 0.8rem;
-    color: #555;
-}
-
-/* links de música com hover */
-.rec-card-link {
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.rec-card-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  margin: 0;
+  font-size: 0.8rem;
+  color: #555;
 }

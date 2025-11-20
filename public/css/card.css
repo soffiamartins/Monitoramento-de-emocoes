@@ -1,56 +1,63 @@
-/* CARD – HUMOR SEMANAL */
+/* ================= CARD – HUMOR SEMANAL ================= */
+
 .weekly-mood-card {
-    width: 280px;
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 24px 20px 28px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-     height: 300px;
-     margin-top: 60px;
-     margin-left: 30px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px 18px 20px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 220px;
+  box-sizing: border-box;
 }
 
-/* Título "Humor Semanal" */
+/* título "Humor Semanal" */
 .weekly-mood-header {
-    width: 100%;
-    font-size: 12px;
-    font-weight: 500;
-    color: #8c8c98;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #f0f0f5;
-    padding-bottom: 8px;
+  width: 100%;
+  font-size: 12px;
+  font-weight: 500;
+  color: #8c8c98;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f0f0f5;
+  padding-bottom: 6px;
 }
 
-/* Texto "Predominante / Emoções mistas / Sem dados" */
+/* label "Sem dados / Emoções mistas / Predominante" */
 .weekly-mood-label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #20202a;
-    margin: 8px 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #20202a;
+  margin: 6px 0 14px;
 }
 
-/* Emoji grandão no meio do card */
+/* círculo do emoji */
 .weekly-mood-emoji {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    background: #f7f78f;        /* amarelinho de fundo */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 64px;
-    margin-bottom: 18px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #f7f78f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 46px;
+  margin-bottom: 10px;
 }
 
-/* Texto embaixo do emoji (Feliz, Triste, Emoções mistas...) */
+/* texto embaixo do emoji */
 .weekly-mood-text {
-    font-size: 14px;
-    font-weight: 600;
-    color: #34343f;
-    text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: #34343f;
+  text-align: center;
+}
+
+/* texto menor de apoio (se usar) */
+.weekly-mood-subtext {
+  font-size: 12px;
+  color: #858597;
+  text-align: center;
+  margin-top: 4px;
 }

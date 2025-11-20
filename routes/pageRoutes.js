@@ -2,11 +2,9 @@ import express from 'express';
 
 const router = express.Router();
 
-// Página inicial
+// Página inicial -> redireciona para /login
 router.get('/', (req, res) => {
-  res.render('home', {
-    title: 'Mood Tracker - Seu Diário Emocional'
-  });
+  return res.redirect('/login');
 });
 
 // Dashboard (PROTEGIDO)
