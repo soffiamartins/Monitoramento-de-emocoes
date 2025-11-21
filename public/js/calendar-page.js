@@ -215,6 +215,8 @@ document.addEventListener('DOMContentLoaded', function () {
   resetPanel();
 });
 
+
+
 function getMoodColor(moodType) {
   const colors = {
     feliz:   '#FFD700',
