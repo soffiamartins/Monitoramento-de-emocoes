@@ -17,7 +17,7 @@
 .sidebar-header {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center; /*flex-center*/
   gap: 20px;
   margin-bottom: 20px;
 }
@@ -26,19 +26,68 @@
   font-size: 24px;
   font-weight: 500;
   letter-spacing: 0.5px;
-  margin: 0;
+  margin: 0 auto;
 }
 
 .logo span {
   font-weight: 700;
+  
+}
+
+.sidebar h1{
+    font-size: 20px;
+  font-weight: 500;
+  margin: 0 auto;
 }
 
 /* Círculo de avatar */
-.avatar {
-  width: 60px;
-  height: 60px;
+.sidebar-avatar {
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background-color: #d9d9d9;
+  overflow: hidden;
+  background: #e5e7eb;
+  margin-top: 12px;
+  margin: 0 auto;
+  
+}
+
+.sidebar-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;          /* espaço entre círculo e lápis */
+  margin: 0 auto;    /* centraliza o conjunto no sidebar */
+}
+.sidebar-avatar-edit:hover {
+  background: #d4d4ff;
+  transform: translateY(-1px);
+}
+
+
+.sidebar-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sidebar-avatar-edit {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #e5e7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  text-decoration: none;
+  color: #1f2937;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.sidebar-avatar-edit:hover {
+  background: #d4d4ff;
+  transform: translateY(-1px);
 }
 
 /* Linha divisória */

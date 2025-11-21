@@ -42,6 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Atualizar card de humor semanal para a semana dessa data
             loadWeeklyMood(selectedDate);
+
+            // Atualizar recomendações para a semana dessa mesma data
+            loadWeeklyRecommendations(selectedDate);
         },
 
         // Carregar eventos já salvos
@@ -88,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Renderiza o calendário
     calendar.render();
     loadWeeklyMood();
-        // Carrega recomendações semanais
+    // Carrega recomendações semanais
     loadWeeklyRecommendations();
 
     // ================== Funções do Popup ==================
@@ -111,27 +114,27 @@ document.addEventListener('DOMContentLoaded', function () {
         saveBtn.disabled = true;
     }
 
-function updatePopupDate(dateString) {
-    if (!dateString) {
-        popupDate.textContent = '';
-        return;
+    function updatePopupDate(dateString) {
+        if (!dateString) {
+            popupDate.textContent = '';
+            return;
+        }
+
+        // dateString vem no formato 'YYYY-MM-DD'
+        const [year, month, day] = dateString.split('-').map(Number);
+
+        // Aqui usamos o construtor com ano, mês (0-11) e dia -> usa fuso local, sem perder 1 dia
+        const date = new Date(year, month - 1, day);
+
+        const formattedDate = date.toLocaleDateString('pt-BR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        popupDate.textContent = formattedDate;
     }
-
-    // dateString vem no formato 'YYYY-MM-DD'
-    const [year, month, day] = dateString.split('-').map(Number);
-
-    // Aqui usamos o construtor com ano, mês (0-11) e dia -> usa fuso local, sem perder 1 dia
-    const date = new Date(year, month - 1, day);
-
-    const formattedDate = date.toLocaleDateString('pt-BR', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-
-    popupDate.textContent = formattedDate;
-}
 
     // ===============Funções do Humor predominante ==============
     function capitalizeFirst(str) {
@@ -240,6 +243,15 @@ function updatePopupDate(dateString) {
             //ATUALIZA O HUMOR SEMANAL COM A SEMANA DA DATA SALVA
             loadWeeklyMood(date);
 
+            // Atualiza eventos sem recarregar a página
+            calendar.refetchEvents();
+
+            // ATUALIZA O HUMOR SEMANAL COM A SEMANA DA DATA SALVA
+            loadWeeklyMood(date);
+
+            //ATUALIZA TAMBÉM AS RECOMENDAÇÕES PARA ESSA SEMANA
+            loadWeeklyRecommendations(date);
+
             hidePopup();
         } catch (err) {
             alert('Erro ao salvar humor: ' + err.message);
@@ -256,145 +268,135 @@ function updatePopupDate(dateString) {
 
     //=======FUNÇÕES CALENDARIO MENSAL ===============
     // Buscar resumo mensal (ou do intervalo visível)
-async function loadMonthlyMoodSummary(start, end) {
-    const emptyMsgEl = document.getElementById('monthlyMoodEmpty');
+    async function loadMonthlyMoodSummary(start, end) {
+        const emptyMsgEl = document.getElementById('monthlyMoodEmpty');
 
-    try {
-        const params = new URLSearchParams({ start, end });
-        const response = await fetch(`/api/moods/summary?${params.toString()}`);
+        try {
+            const params = new URLSearchParams({ start, end });
+            const response = await fetch(`/api/moods/summary?${params.toString()}`);
 
-        if (!response.ok) {
-            throw new Error('Erro ao buscar resumo de humores');
+            if (!response.ok) {
+                throw new Error('Erro ao buscar resumo de humores');
+            }
+
+            const data = await response.json();
+            console.log('Resumo de humores (mensal):', data);
+
+            renderMonthlyMoodChart(data.summary || []);
+        } catch (err) {
+            console.error(err);
+            if (emptyMsgEl) {
+                emptyMsgEl.style.display = 'block';
+                emptyMsgEl.textContent = 'Erro ao carregar gráfico.';
+            }
+            if (monthlyMoodChart) {
+                monthlyMoodChart.destroy();
+                monthlyMoodChart = null;
+            }
+        }
+    }
+
+    // Desenhar/atualizar o gráfico de pizza
+    function renderMonthlyMoodChart(summary) {
+        const canvas = document.getElementById('monthlyMoodPie');
+        const emptyMsgEl = document.getElementById('monthlyMoodEmpty');
+
+        if (!canvas) {
+            console.warn('Canvas #monthlyMoodPie não encontrado');
+            return;
         }
 
-        const data = await response.json();
-        console.log('Resumo de humores (mensal):', data);
+        // Sem dados no período
+        if (!summary || summary.length === 0) {
+            if (emptyMsgEl) {
+                emptyMsgEl.style.display = 'block';
+                emptyMsgEl.textContent = 'Nenhum humor registrado neste período.';
+            }
+            if (monthlyMoodChart) {
+                monthlyMoodChart.destroy();
+                monthlyMoodChart = null;
+            }
+            return;
+        }
 
-        renderMonthlyMoodChart(data.summary || []);
-    } catch (err) {
-        console.error(err);
         if (emptyMsgEl) {
-            emptyMsgEl.style.display = 'block';
-            emptyMsgEl.textContent = 'Erro ao carregar gráfico.';
+            emptyMsgEl.style.display = 'none';
         }
+
+        const labels = summary.map(item => capitalizeFirst(item.mood_type));
+        const counts = summary.map(item => item.total);
+        const backgroundColors = summary.map(item => getMoodColor(item.mood_type));
+
+        // Se já existir gráfico, destruir antes de redesenhar
         if (monthlyMoodChart) {
             monthlyMoodChart.destroy();
-            monthlyMoodChart = null;
         }
-    }
-}
 
-// Desenhar/atualizar o gráfico de pizza
-function renderMonthlyMoodChart(summary) {
-    const canvas = document.getElementById('monthlyMoodPie');
-    const emptyMsgEl = document.getElementById('monthlyMoodEmpty');
+        const ctx = canvas.getContext('2d');
 
-    if (!canvas) {
-        console.warn('Canvas #monthlyMoodPie não encontrado');
-        return;
-    }
-
-    // Sem dados no período
-    if (!summary || summary.length === 0) {
-        if (emptyMsgEl) {
-            emptyMsgEl.style.display = 'block';
-            emptyMsgEl.textContent = 'Nenhum humor registrado neste período.';
-        }
-        if (monthlyMoodChart) {
-            monthlyMoodChart.destroy();
-            monthlyMoodChart = null;
-        }
-        return;
-    }
-
-    if (emptyMsgEl) {
-        emptyMsgEl.style.display = 'none';
-    }
-
-    const labels = summary.map(item => capitalizeFirst(item.mood_type));
-    const counts = summary.map(item => item.total);
-    const backgroundColors = summary.map(item => getMoodColor(item.mood_type));
-
-    // Se já existir gráfico, destruir antes de redesenhar
-    if (monthlyMoodChart) {
-        monthlyMoodChart.destroy();
-    }
-
-    const ctx = canvas.getContext('2d');
-
-    monthlyMoodChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: counts,
-                backgroundColor: backgroundColors
-            }]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        boxWidth: 12,
-                        padding: 12
+        monthlyMoodChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: counts,
+                    backgroundColor: backgroundColors
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 12
+                        }
                     }
                 }
             }
-        }
-    });
-}
+        });
+    }
 
-// ==================================
-//RECOMENDAÇÕES
-//==================================
+    // ==================================
+    //RECOMENDAÇÕES
+    //==================================
     // ================== RECOMENDAÇÕES POR HUMOR ==================
     const moodRecommendations = {
         triste: {
-            message: 'Sua semana parece ter sido mais pesada... que tal algo leve pra dar risada e relaxar? 💛',
+            message: 'Sua semana parece ter sido mais pesada... que tal algo leve pra dar risada e relaxar?',
             movies: [
                 {
                     title: 'As Branquelas',
-                    cover: '/img/movies/as-branquelas.jpg',
+                    cover: '/images/asbranquelas.jpg',
                     note: 'Comédia clássica pra rir sem pensar muito.'
                 }
 
             ],
             musics: [
                 {
-                    title: 'Feel Good Hits',
-                    cover: '/img/music/feel-good.jpg',
-                    url: 'https://www.youtube.com/results?search_query=feel+good+hits+playlist',
+                    title: 'Feel alive playlist',
+                    cover: '/images/feel-good.png',
+                    url: 'https://youtu.be/vW2HWHYd_jg?si=6kJ_B3iLDHYzT0_g',
                     note: 'Mais energia positiva pra sua semana.'
                 }
             ]
         },
 
         feliz: {
-            message: 'Semana boa, hein? Bora manter essa energia lá em cima! 😄',
+            message: 'Semana boa, hein? Bora manter essa energia lá em cima!',
             movies: [
                 {
                     title: 'Mamma Mia!',
-                    cover: '/img/movies/mamma-mia.jpg',
+                    cover: '/images/mammamia.jpg',
                     note: 'Musical alegre, colorido e cheio de músicas icônicas.'
                 },
-                {
-                    title: 'Enrolados',
-                    cover: '/img/movies/enrolados.jpg',
-                    note: 'Animação fofa e divertida na mesma vibe.'
-                }
+
             ],
             musics: [
                 {
-                    title: 'Pop Feliz',
-                    cover: '/img/music/pop-feliz.jpg',
-                    url: 'https://www.youtube.com/results?search_query=happy+pop+playlist',
-                    note: 'Pop animado pra dançar sozinho(a) no quarto.'
-                },
-                {
                     title: 'Summer Hits',
-                    cover: '/img/music/summer-hits.jpg',
-                    url: 'https://www.youtube.com/results?search_query=summer+hits+playlist',
+                    cover: '/images/summerhits.jpg',
+                    url: 'https://youtube.com/playlist?list=PLH41RdC24gt9RdUorMMkhd_8is3AjhfiK&si=yC3nsAFD9d8nVTi6',
                     note: 'Energia de verão o ano inteiro.'
                 }
             ]
@@ -405,28 +407,18 @@ function renderMonthlyMoodChart(summary) {
             movies: [
                 {
                     title: 'O Fabuloso Destino de Amélie Poulain',
-                    cover: '/img/movies/amelie.jpg',
+                    cover: '/images/ofabuloso.jpg',
                     note: 'Calmo, delicado e aconchegante.'
                 },
-                {
-                    title: 'Procurando Nemo',
-                    cover: '/img/movies/procurando-nemo.jpg',
-                    note: 'História leve e familiar, fácil de assistir.'
-                }
+
             ],
             musics: [
                 {
-                    title: 'Lo-fi Beats',
-                    cover: '/img/music/lofi.jpg',
-                    url: 'https://www.youtube.com/results?search_query=lofi+beats',
-                    note: 'Ótimo pra estudar, trabalhar ou só desacelerar.'
+                    title: 'Good vibes',
+                    cover: '/images/good-vibes.png',
+                    url: 'https://youtube.com/playlist?list=PLH41RdC24gt945nUB-RjQuQSiQ98RsTg3&si=QnqTs0_Qsj-rddoh',
+                    note: 'Ótimo para desacelerar.'
                 },
-                {
-                    title: 'Relax & Chill',
-                    cover: '/img/music/chill-relax.jpg',
-                    url: 'https://www.youtube.com/results?search_query=chill+relax+playlist',
-                    note: 'Clima calminho pra te acompanhar.'
-                }
             ]
         },
 
@@ -435,153 +427,118 @@ function renderMonthlyMoodChart(summary) {
             movies: [
                 {
                     title: 'Comer, Rezar, Amar',
-                    cover: '/img/movies/comer-rezar-amar.jpg',
+                    cover: '/images/comererezar.jpg',
                     note: 'Uma jornada de autoconhecimento.'
                 },
-                {
-                    title: 'A Procura da Felicidade',
-                    cover: '/img/movies/a-procura-da-felicidade.jpg',
-                    note: 'Inspirador e emocionante na medida certa.'
-                }
             ],
             musics: [
                 {
-                    title: 'Acústico Calmante',
-                    cover: '/img/music/acustico.jpg',
-                    url: 'https://www.youtube.com/results?search_query=acoustic+calm+playlist',
-                    note: 'Violãozinho gostoso pra momentos tranquilos.'
-                },
-                {
                     title: 'Chill Vibes',
-                    cover: '/img/music/chill-vibes.jpg',
-                    url: 'https://www.youtube.com/results?search_query=chill+vibes+playlist',
+                    cover: '/images/chill-vibes.jpg',
+                    url: 'https://youtube.com/playlist?list=PLH41RdC24gt8GiHcWP81yqJjb3QJkaKy2&si=fqVT3naKj3OBkhNJ',
                     note: 'Músicas suaves pra fundo do dia.'
                 }
             ]
         },
 
         irritado: {
-            message: 'Semana tensa? Vamos aliviar com coisas que tirem você um pouco da realidade 🔥',
+            message: 'Semana tensa? Vamos aliviar com coisas que tirem você um pouco da realidade.',
             movies: [
                 {
-                    title: 'Scott Pilgrim Contra o Mundo',
-                    cover: '/img/movies/scott-pilgrim.jpg',
-                    note: 'Visual diferente, trilha boa e muita informação pra distrair.'
-                },
-                {
                     title: 'Guardiões da Galáxia',
-                    cover: '/img/movies/guardioes.jpg',
+                    cover: '/images/guardioesdagalaxia.jpg',
                     note: 'Ação + humor + trilha sonora incrível.'
                 }
             ],
             musics: [
                 {
-                    title: 'Rock/Indie Energético',
-                    cover: '/img/music/rock.jpg',
-                    url: 'https://www.youtube.com/results?search_query=indie+rock+playlist',
+                    title: 'Rock/Indie Energético playlist',
+                    cover: '/images/indierock.jpg',
+                    url: 'https://youtu.be/ma9I9VBKPiw?si=iIx0y0Yb68gnPdCQ',
                     note: 'Pra extravasar a energia.'
                 },
-                {
-                    title: 'Workout Hits',
-                    cover: '/img/music/workout.jpg',
-                    url: 'https://www.youtube.com/results?search_query=workout+hits+playlist',
-                    note: 'Se der, canaliza na atividade física.'
-                }
             ]
         },
 
         cansado: {
-            message: 'Você parece bem cansado(a). Merece descanso e conteúdos confortáveis 😴',
+            message: 'Você parece bem cansado(a). Merece descanso e conteúdos confortáveis.',
             movies: [
                 {
-                    title: 'Divertida Mente',
-                    cover: '/img/movies/divertida-mente.jpg',
-                    note: 'Fofinho, leve, perfeito pra ver deitado.'
-                },
-                {
                     title: 'Meu Amigo Totoro',
-                    cover: '/img/movies/totoro.jpg',
+                    cover: '/images/totoro.jpg',
                     note: 'Um abraço em forma de filme.'
                 }
             ],
             musics: [
                 {
-                    title: 'Sleep/Relax',
-                    cover: '/img/music/sleep.jpg',
-                    url: 'https://www.youtube.com/results?search_query=sleep+music+playlist',
+                    title: 'Sleep/Relax playlist',
+                    cover: '/images/sleep.jpg',
+                    url: 'https://youtube.com/playlist?list=PLH41RdC24gt9auq2emhzFFAxa2Szs1894&si=x1asZmxJggdpAmti',
                     note: 'Pra relaxar antes de dormir.'
                 },
-                {
-                    title: 'Piano Calmo',
-                    cover: '/img/music/piano.jpg',
-                    url: 'https://www.youtube.com/results?search_query=calm+piano+playlist',
-                    note: 'Piano suave pra desacelerar.'
-                }
             ]
         },
 
         neutro: {
-            message: 'Sua semana ficou num meio-termo. Que tal experimentar um mix de vibes diferentes? 😊',
+            message: 'Sua semana ficou num meio-termo. Que tal experimentar um mix de vibes diferentes?',
             movies: [
                 {
                     title: 'O Diabo Veste Prada',
-                    cover: '/img/movies/o-diabo-veste-prada.jpg',
+                    cover: '/images/o-diabo-veste-prada.jpg',
                     note: 'Leve, divertido e com um toque de estilo.'
                 },
-                {
-                    title: 'Aproximação',
-                    cover: '/img/movies/divertida-mente.jpg',
-                    note: 'Divertida Mente pra refletir sobre emoções.'
-                }
             ],
             musics: [
                 {
-                    title: 'Mix Diário',
-                    cover: '/img/music/mix-diario.jpg',
-                    url: 'https://www.youtube.com',
-                    note: 'Escolha uma playlist que combine com o seu momento agora.'
-                },
-                {
-                    title: 'Indie Pop Chill',
-                    cover: '/img/music/indie-pop.jpg',
-                    url: 'https://www.youtube.com/results?search_query=indie+pop+chill',
+                    title: 'Iindie pop playlist',
+                    cover: '/images/indie-pop.jpg',
+                    url: 'https://youtube.com/playlist?list=PLH41RdC24gt_Lcsw7wNitbrweZhqOYkgO&si=8cwa8KrsJMaUxdej',
                     note: 'Climinha suave, nem muito pra cima, nem muito pra baixo.'
                 }
             ]
         },
 
-        mixed: {
-            message: 'Sua semana foi uma montanha-russa de emoções. Tudo bem, isso é super humano 💜',
+        motivado: {
+            message: 'Bora manter essa motivação!',
             movies: [
                 {
-                    title: 'Divertida Mente',
-                    cover: '/img/movies/divertida-mente.jpg',
-                    note: 'Não tem filme melhor pra falar sobre emoções misturadas.'
+                    title: 'Rocky Balboa',
+                    cover: '/images/rocky.jpg',
+                    note: 'Uma história comovente de determinação e redenção que prova que a luta nunca acaba.'
                 },
+
+            ],
+            musics: [
+                {
+                    title: 'Motivation - Playlist',
+                    cover: '/images/motivado.jpg',
+                    url: 'https://youtube.com/playlist?list=PLH41RdC24gt-6sBHprm_40SMOFEZgqe3x&si=SHXKVmGad8ikg3Nd',
+                    note: 'Energia o dia inteiro.'
+                }
+            ]
+        },
+
+        mixed: {
+            message: 'Sua semana foi uma montanha-russa de emoções. Tudo bem, isso é super comum!',
+            movies: [
                 {
                     title: 'Quem Quer Ser um Milionário?',
-                    cover: '/img/movies/milionario.jpg',
+                    cover: '/images/milionario.jpg',
                     note: 'Drama, alegria, tensão e alívio: tudo junto.'
                 }
             ],
             musics: [
                 {
                     title: 'Emotional Mix',
-                    cover: '/img/music/emotional.jpg',
+                    cover: '/images/emotional-mix.png',
                     url: 'https://www.youtube.com/results?search_query=emotional+playlist',
                     note: 'Playlist pra acompanhar essa mistura toda.'
                 },
-                {
-                    title: 'Mood Booster',
-                    cover: '/img/music/mood-booster.jpg',
-                    url: 'https://www.youtube.com/results?search_query=mood+booster+playlist',
-                    note: 'Pra tentar puxar o ponteiro um pouco pro positivo.'
-                }
             ]
         },
 
         none: {
-            message: '',
+            message: 'Ainda não temos registros suficientes essa semana. Que tal começar marcando seu humor hoje? 💫',
             movies: [
                 {
                     title: 'Tá Dando Onda',
@@ -599,7 +556,7 @@ function renderMonthlyMoodChart(summary) {
             ]
         }
     };
-    async function loadWeeklyRecommendations() {
+    async function loadWeeklyRecommendations(referenceDate) {
         const section = document.getElementById('weekly-recommendations');
         if (!section) return;
 
@@ -608,7 +565,9 @@ function renderMonthlyMoodChart(summary) {
         const musicasCol = section.querySelector('.rec-musicas');
 
         try {
-            const res = await fetch('/api/moods/weekly-summary');
+            // se vier uma data, manda para a API (mesma lógica do loadWeeklyMood)
+            const params = referenceDate ? `?date=${referenceDate}` : '';
+            const res = await fetch(`/api/moods/weekly-summary${params}`);
             if (!res.ok) throw new Error('Erro ao buscar resumo semanal');
 
             const data = await res.json();
@@ -683,11 +642,11 @@ function renderMonthlyMoodChart(summary) {
     }
 
 
-// Helper para deixar o texto bonitinho
-function capitalizeFirst(str) {
-    if (!str) return '';
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
+    // Helper para deixar o texto bonitinho
+    function capitalizeFirst(str) {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 
 
     // Função para definir cores baseadas no humor

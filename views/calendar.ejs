@@ -4,7 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
+  <title>
+    <%= title %>
+  </title>
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/sidebar.css">
@@ -19,7 +26,16 @@
   <div class="sidebar">
     <div class="sidebar-header">
       <h1 class="logo">MoodBit<span>.</span></h1>
-      <div class="avatar"></div>
+      <div class="sidebar-avatar-row">
+        <div class="sidebar-avatar">
+          <img id="currentAvatar" src="<%= user.avatar || '/images/avatar/avatar1.jpg' %>" alt="">
+        </div>
+
+        <a href="/configuracoes" class="sidebar-avatar-edit" title="Editar avatar">
+          ✏️
+        </a>
+      </div>
+      <h1>Olá, <%= user.name %>!</h1>
     </div>
 
     <div class="sidebar-divider"></div>
@@ -27,7 +43,7 @@
     <nav class="sidebar-menu">
       <a href="/dashboard" class="menu-item">Home</a>
       <a href="/calendar" class="menu-item active">Calendário</a>
-      <a href="#" class="menu-item">Configurações</a>
+      <a href="/configuracoes" class="menu-item">Configurações</a>
       <a href="/logout" class="menu-item">Sair</a>
     </nav>
   </div>
@@ -91,9 +107,7 @@
       <!-- anotação -->
       <div class="day-panel-note">
         <label for="moodNote"><strong>Anotação do dia</strong></label>
-        <textarea id="moodNote"
-          placeholder="Escreva aqui o que aconteceu, como se sentiu..."
-          rows="5"></textarea>
+        <textarea id="moodNote" placeholder="Escreva aqui o que aconteceu, como se sentiu..." rows="5"></textarea>
       </div>
 
       <!-- botões -->
