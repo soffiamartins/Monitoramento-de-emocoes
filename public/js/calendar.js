@@ -259,11 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function showSuccessMessage(emoji, mood, note, date) {
-        const message = note
-            ? `Humor salvo! ${emoji} (${mood})\nAnotação: "${note}"`
-            : `Humor salvo! ${emoji} (${mood})`;
-
-        alert(message);
+        console.log('Humor salvo!', { emoji, mood, note, date });
     }
 
     //=======FUNÇÕES CALENDARIO MENSAL ===============
