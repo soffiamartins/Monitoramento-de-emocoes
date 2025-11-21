@@ -51,7 +51,8 @@ router.post('/login', (req, res) => {
     req.session.user = {
       id: user.id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      avatar: user.avatar || '/img/avatars/avatar1.png'
     };
 
     console.log('Login REAL bem-sucedido:', user.name);
@@ -111,7 +112,7 @@ router.post('/register', (req, res) => {
     }
 
     // Criar usuário no banco
-    User.create(name, email, password, (err, userId) => {
+    User.create(name, email, password, null,(err, userId) => {
       if (err) {
         console.error('Erro ao criar usuário:', err);
         return res.render('register', {

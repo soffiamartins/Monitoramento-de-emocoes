@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= title %>
+  </title>
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/settings.css">
+</head>
+
+<body>
+  <!--  ==================ASIDE NAVBAR ============================-->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h1 class="logo">MoodBit<span>.</span></h1>
+      <div class="sidebar-avatar-row">
+        <div class="sidebar-avatar">
+          <img src="<%= user.avatar || '/images/avatar/avatar1.jpg' %>" alt="">
+        </div>
+
+        <a href="/configuracoes" class="sidebar-avatar-edit" title="Editar avatar">
+          ✏️
+        </a>
+      </div>
+      <h1>Olá, <%= user.name %>!</h1>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <nav class="sidebar-menu">
+      <a href="/dashboard" class="menu-item">Home</a>
+      <a href="/calendar" class="menu-item">Calendário</a>
+      <a href="/configuracoes" class="menu-item active">Configurações</a>
+      <a href="/logout" class="menu-item">Sair</a>
+    </nav>
+  </div>
+
+  <!-- ======================== CONTEÚDO PRINCIPAL ========================= -->
+  <main class="settings-page">
+    <section class="settings-header">
+      <h2>Informações do usuário</h2>
+      <hr>
+    </section>
+
+    <!-- mensagens de feedback (opcional, se você passar success/error do backend) -->
+    <% if (typeof success !=='undefined' && success) { %>
+      <div class="settings-alert success">
+        <%= success %>
+      </div>
+      <% } %>
+
+        <% if (typeof error !=='undefined' && error) { %>
+          <div class="settings-alert error">
+            <%= error %>
+          </div>
+          <% } %>
+
+            <section class="settings-content">
+              <form class="settings-form" method="POST" action="/configuracoes">
+                <!-- AVATAR -->
+                <div class="settings-avatar-wrapper">
+                  <div class="avatar-large">
+                    <img id="currentAvatar" src="<%= user.avatar || '/images/avatar/avatar1.jpg' %>" alt="">
+                  </div>
+                  <button type="button" id="changeAvatarBtn" class="avatar-edit-btn" title="Alterar avatar">
+                    ✏️
+                  </button>
+                </div>
+
+                <!-- SELETOR DE AVATAR -->
+                <div id="avatarPicker" class="avatar-picker" style="display:none;">
+                  <% const avatars=[ '/images/avatares/avatar1.jpg' , '/images/avatares/avatar2.jpg'
+                    , '/images/avatares/avatar3.jpg' , '/images/avatares/avatar4.jpg' , '/images/avatares/avatar5.jpg'
+                    , '/images/avatares/avatar6.jpg' , '/images/avatares/avatar7.jpg' , '/images/avatares/avatar8.jpg'
+                    , '/images/avatares/avatar9.jpg', '/images/avatares/avatar10.jpg'
+
+                    ]; %>
+
+                    <% avatars.forEach(function(path) { %>
+                      <div class="avatar-option <%= user.avatar === path ? 'selected' : '' %>"
+                        data-avatar="<%= path %>">
+                        <img src="<%= path %>" alt="Avatar opção">
+                      </div>
+                      <% }) %>
+                </div>
+
+                <!-- valor real do avatar para o backend -->
+                <input type="hidden" name="avatar" id="avatarInput"
+                  value="<%= user.avatar || '/images/avatar/avatar1.jpg' %>">
+
+                <!-- CAMPOS DE TEXTO -->
+                <div class="settings-fields">
+                  <div class="settings-field">
+                    <label for="name">Nome:<span class="required">*</span></label>
+                    <div class="settings-input-wrapper">
+                      <input id="name" name="name" type="text" required value="<%= user.name || '' %>">
+                      <span class="input-icon">✏️</span>
+                    </div>
+                  </div>
+
+                  <div class="settings-field">
+                    <label for="email">Email:<span class="required">*</span></label>
+                    <div class="settings-input-wrapper">
+                      <input id="email" name="email" type="email" required value="<%= user.email || '' %>">
+                      <span class="input-icon">✏️</span>
+                    </div>
+                  </div>
+
+                  <div class="settings-field">
+                    <label for="password">Senha:</label>
+                    <div class="settings-input-wrapper">
+                      <input id="password" name="password" type="password"
+                        placeholder="Digite uma nova senha ou deixe em branco">
+                      <span class="input-icon">✏️</span>
+                    </div>
+                    <small class="field-hint">Se deixar em branco, a senha atual será mantida.</small>
+                  </div>
+                </div>
+
+                <!-- BOTÃO SALVAR -->
+                <div class="settings-actions">
+                  <button type="submit" class="settings-save-btn">Salvar</button>
+                </div>
+              </form>
+            </section>
+  </main>
+
+  <!-- JS simples para o seletor de avatar -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const changeBtn = document.getElementById('changeAvatarBtn');
+      const picker = document.getElementById('avatarPicker');
+      const avatarInput = document.getElementById('avatarInput');
+      const currentAvatarImg = document.getElementById('currentAvatar');
+
+      if (!changeBtn || !picker) return;
+
+      // abre/fecha a grade de avatares
+      changeBtn.addEventListener('click', () => {
+        picker.style.display =
+          picker.style.display === 'none' || picker.style.display === ''
+            ? 'flex'
+            : 'none';
+      });
+
+      // seleciona avatar
+      picker.querySelectorAll('.avatar-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const src = opt.dataset.avatar;
+
+          currentAvatarImg.src = src;
+          avatarInput.value = src;
+
+          picker.querySelectorAll('.avatar-option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
