@@ -1,0 +1,129 @@
+.calendar-page {
+  margin-left: 170px;
+  padding: 20px 30px;
+  display: flex;
+  gap: 20px;
+}
+
+.calendar-page-calendar {
+  flex: 2;
+}
+
+.calendar-day-panel {
+  flex: 1;
+  background: #34417c;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.day-panel-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.day-panel-emoji {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0;
+}
+
+.day-emoji {
+  font-size: 60px;
+}
+
+.day-mood-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.day-panel-emojis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.emoji-option {
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 6px 4px;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.emoji-option.selected {
+  border-color: #4b6bfb;
+  background: #eef2ff;
+}
+
+.emoji-option .emoji {
+  font-size: 22px;
+}
+
+.emoji-option .mood-label {
+  font-size: 0.8rem;
+}
+
+.day-panel-note textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.day-panel-note textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+.day-panel-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-save,
+.btn-delete {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.btn-save {
+  background: #32b83d;
+  color: #fff;
+}
+
+.btn-save:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.btn-delete {
+  background: #fa5d5d;
+  color: #fff;
+}
+
+.btn-delete:hover {
+  background-color: #ce4646;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.day-info-text {
+  font-size: 0.85rem;
+  color: #fff;
+  text-align: center;
+}

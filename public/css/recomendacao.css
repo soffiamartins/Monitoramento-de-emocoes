@@ -1,0 +1,49 @@
+.recommendations {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px 20px 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  color: #333;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* cards de filmes e músicas */
+.rec-card {
+  display: flex;
+  align-items: center;        /* centraliza verticalmente imagem + texto */
+  gap: 10px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  text-decoration: none;
+}
+
+/* imagem */
+.rec-card img {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* wrapper do texto */
+.rec-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.rec-info h5 {
+  margin: 0 0 2px;
+  font-size: 0.9rem;
+  color: #222;
+}
+
+.rec-info p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #555;
+}

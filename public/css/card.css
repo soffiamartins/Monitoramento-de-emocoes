@@ -1,0 +1,63 @@
+/* ================= CARD – HUMOR SEMANAL ================= */
+
+.weekly-mood-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px 18px 20px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 220px;
+  box-sizing: border-box;
+}
+
+/* título "Humor Semanal" */
+.weekly-mood-header {
+  width: 100%;
+  font-size: 12px;
+  font-weight: 500;
+  color: #8c8c98;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f0f0f5;
+  padding-bottom: 6px;
+}
+
+/* label "Sem dados / Emoções mistas / Predominante" */
+.weekly-mood-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #20202a;
+  margin: 6px 0 14px;
+}
+
+/* círculo do emoji */
+.weekly-mood-emoji {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #f7f78f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 46px;
+  margin-bottom: 10px;
+}
+
+/* texto embaixo do emoji */
+.weekly-mood-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #34343f;
+  text-align: center;
+}
+
+/* texto menor de apoio (se usar) */
+.weekly-mood-subtext {
+  font-size: 12px;
+  color: #858597;
+  text-align: center;
+  margin-top: 4px;
+}

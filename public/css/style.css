@@ -1,0 +1,72 @@
+/* ===== RESET E VARIÁVEIS GLOBAIS ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --error-color: #ff6b6b;
+    --success-color: #51cf66;
+    --text-light: white;
+    --text-dark: #333;
+}
+
+body {
+    font-family: "Jost", sans-serif;
+    background: rgb(255, 255, 255);
+    /*linear-gradient(135deg, var(--primary-color), var(--secondary-color))*/
+    min-height: 100vh;
+    color: var(--text-light);
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    /* remove scroll horizontal */
+}
+
+/* ===== ESTILOS DA HOME ===== */
+.home-container {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    min-height: 100vh;
+    padding: 20px;
+    text-align: left;
+    /* opcional, pra não centralizar textos */
+    padding-top: 40px;
+    padding-left: 210px;
+}
+
+.home-content {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 3rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 100%;
+}
+
+.home-title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.home-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.home-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}

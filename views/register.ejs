@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+
+
+    <link rel="stylesheet" href="/css/register.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="logo">MoodBit.</div>
+
+        <div class="form-section">
+            <h1 id="titulo">Comece sua jornada.</h1>
+            <p id="subtitulo">Acompanhe suas emoções diariamente</p>
+
+            <div class="buttons-top">
+                <a href="/login" class="login-button"><button type="button">Entrar</button></a>
+                <a href="/register" class="register-button"><button type="button">Criar conta</button></a>
+            </div>
+
+            <hr>
+
+            <% if (error) { %>
+                <div class="error">
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <% if (success) { %>
+                        <div class="success">
+                            <%= success %>
+                        </div>
+                        <% } %>
+
+                            <form method="POST" action="/register">
+                                <input type="text" name="name" placeholder="Nome" required>
+                                <input type="email" name="email" placeholder="E-mail" required>
+
+                                <div class="password-wrapper">
+                                    <input type="password" name="password" id="password" placeholder="Senha" required>
+                                    <svg id="icon-eye-password" class="eye-icon" viewBox="0 0 24 24">
+                                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg>
+                                    <svg id="icon-eye-off-password" class="eye-icon hidden" viewBox="0 0 24 24">
+                                        <path
+                                            d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.77 21.77 0 0 1 5.06-6.94" />
+                                        <path d="M1 1l22 22" />
+                                    </svg>
+                                </div>
+
+                                <div class="password-wrapper">
+                                    <input type="password" name="confirmPassword" id="confirmPassword"
+                                        placeholder="Repita a senha" required>
+                                    <svg id="icon-eye-confirm" class="eye-icon" viewBox="0 0 24 24">
+                                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg>
+                                    <svg id="icon-eye-off-confirm" class="eye-icon hidden" viewBox="0 0 24 24">
+                                        <path
+                                            d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.77 21.77 0 0 1 5.06-6.94" />
+                                        <path d="M1 1l22 22" />
+                                    </svg>
+                                </div>
+
+                                <button type="submit" class="submit-btn">Criar minha conta</button>
+                            </form>
+
+                            <div class="link">
+                                <a href="/login">Já possui conta?</a>
+                            </div>
+        </div>
+
+    </div>
+    <script>
+        function togglePassword(inputId, eyeId, eyeOffId) {
+            const input = document.getElementById(inputId);
+            const eye = document.getElementById(eyeId);
+            const eyeOff = document.getElementById(eyeOffId);
+
+            eye.addEventListener("click", () => {
+                input.type = "text";
+                eye.classList.add("hidden");
+                eyeOff.classList.remove("hidden");
+            });
+
+            eyeOff.addEventListener("click", () => {
+                input.type = "password";
+                eyeOff.classList.add("hidden");
+                eye.classList.remove("hidden");
+            });
+        }
+
+        togglePassword("password", "icon-eye-password", "icon-eye-off-password");
+        togglePassword("confirmPassword", "icon-eye-confirm", "icon-eye-off-confirm");
+    </script>
+</body>
+
+</html>

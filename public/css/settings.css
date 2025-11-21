@@ -1,0 +1,243 @@
+.settings-page {
+  margin-left: 220px;
+  padding: 24px 32px;
+  min-height: 100vh;
+  background-color: #f5f7fb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.settings-header h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: black;
+}
+
+.settings-header hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin-bottom: 16px;
+}
+
+.settings-alert {
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.settings-alert.success {
+  background-color: #ecfdf3;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.settings-alert.error {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.settings-content {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  padding: 20px 24px;
+  max-width: 720px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settings-avatar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.avatar-large {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-edit-btn {
+  border: none;
+  background: #e5e7ff;
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.avatar-edit-btn:hover {
+  background: #d4d4ff;
+  transform: translateY(-1px);
+}
+
+.avatar-picker {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.avatar-option {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: #f3f4f6;
+  transition: border-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.avatar-option img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-option:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+}
+
+.avatar-option.selected {
+  border-color: #4b6bfb;
+}
+
+.settings-fields {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-field label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: black;
+}
+
+.settings-field .required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.settings-input-wrapper {
+  position: relative;
+}
+
+.settings-input-wrapper input {
+  width: 100%;
+  padding: 10px 34px 10px 10px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background-color: #f9fafb;
+}
+
+.settings-input-wrapper input:focus {
+  border-color: #4b6bfb;
+  box-shadow: 0 0 0 1px rgba(75, 107, 251, 0.25);
+  background-color: #ffffff;
+}
+
+.input-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.field-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.settings-save-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: #4b6bfb;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+.settings-save-btn:hover {
+  background: #3b5ce0;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.45);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .settings-page {
+    margin-left: 0;
+    padding: 16px;
+  }
+
+  .settings-content {
+    box-shadow: none;
+    padding: 16px;
+  }
+}
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.eye-icon {
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    stroke: #aaaaaa;
+    fill: #555555;
+}
+
+.hidden {
+    display: none;
+}
