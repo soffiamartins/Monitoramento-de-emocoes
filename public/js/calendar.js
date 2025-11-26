@@ -419,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
 
         calmo: {
-            message: 'Seu clima está tranquilo, e isso é lindo. Vamos manter essa paz ✨',
+            message: 'Seu clima está tranquilo, vamos manter essa paz.',
             movies: [
                 {
                     title: 'Comer, Rezar, Amar',
@@ -534,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
 
         none: {
-            message: 'Ainda não temos registros suficientes essa semana. Que tal começar marcando seu humor hoje? 💫',
+            message: 'Ainda não temos registros suficientes essa semana. Que tal começar marcando seu humor hoje?',
             movies: [
                 {
                     title: 'Tá Dando Onda',
